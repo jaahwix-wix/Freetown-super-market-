@@ -1,0 +1,507 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A grocery or household product sold at Freetown Supermarket with real-time stock tracking.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "sku": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 40
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Fresh Produce",
+            "Pantry & Grains",
+            "Bakery & Dairy",
+            "Chilled & Beverages",
+            "Cosmetics",
+            "Drinks by Crate",
+            "Water by Crate",
+            "Household & Care"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 500
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "price": {
+          "type": "number"
+        },
+        "stockQuantity": {
+          "type": "integer"
+        },
+        "lowStockThreshold": {
+          "type": "integer"
+        },
+        "imageUrl": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "featured": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "lastOrderId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "sku",
+        "name",
+        "category",
+        "description",
+        "unit",
+        "price",
+        "stockQuantity",
+        "lowStockThreshold",
+        "imageUrl",
+        "featured",
+        "active",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Customer account and saved delivery details.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "defaultAddress": {
+          "type": "string",
+          "maxLength": 240
+        },
+        "defaultZone": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "role": {
+          "type": "string",
+          "enum": ["customer", "admin"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "email",
+        "role",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A verified customer order placed through Freetown Supermarket checkout.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "orderNumber": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 32
+        },
+        "customerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "customerName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "customerEmail": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 160
+        },
+        "customerPhone": {
+          "type": "string",
+          "minLength": 6,
+          "maxLength": 30
+        },
+        "deliveryAddress": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 240
+        },
+        "deliveryZone": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 80
+        },
+        "paymentMethod": {
+          "type": "string",
+          "enum": ["card", "orange_money", "africell_money", "cod"]
+        },
+        "paymentStatus": {
+          "type": "string",
+          "enum": ["paid", "cod_pending"]
+        },
+        "paymentReference": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 128
+        },
+        "subtotal": {
+          "type": "number"
+        },
+        "deliveryFee": {
+          "type": "number"
+        },
+        "total": {
+          "type": "number"
+        },
+        "itemCount": {
+          "type": "integer"
+        },
+        "itemsSummary": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 400
+        },
+        "status": {
+          "type": "string",
+          "enum": ["confirmed", "packing", "out_for_delivery", "delivered", "cancelled"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "orderNumber",
+        "customerId",
+        "customerName",
+        "customerEmail",
+        "customerPhone",
+        "deliveryAddress",
+        "deliveryZone",
+        "paymentMethod",
+        "paymentStatus",
+        "paymentReference",
+        "subtotal",
+        "deliveryFee",
+        "total",
+        "itemCount",
+        "itemsSummary",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "OrderItem": {
+      "title": "OrderItem",
+      "description": "Line item inside an order subcollection.",
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "sku": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "unitPrice": {
+          "type": "number"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "lineTotal": {
+          "type": "number"
+        },
+        "customerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        }
+      },
+      "required": [
+        "productId",
+        "sku",
+        "name",
+        "unit",
+        "unitPrice",
+        "quantity",
+        "lineTotal",
+        "customerId"
+      ]
+    },
+    "EmailNotification": {
+      "title": "EmailNotification",
+      "description": "Automated transactional email notification record sent for order creation or status updates.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "orderId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "orderNumber": {
+          "type": "string",
+          "maxLength": 32
+        },
+        "customerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "recipientEmail": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "recipientName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "subject": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "bodyPreview": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "eventType": {
+          "type": "string",
+          "enum": ["order_confirmed", "status_packing", "status_out_for_delivery", "status_delivered", "status_cancelled"]
+        },
+        "deliveryMode": {
+          "type": "string",
+          "enum": ["smtp", "outbox_logged"]
+        },
+        "deliveryStatus": {
+          "type": "string",
+          "enum": ["sent", "queued"]
+        },
+        "messageId": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "orderId",
+        "orderNumber",
+        "customerId",
+        "recipientEmail",
+        "recipientName",
+        "subject",
+        "bodyPreview",
+        "eventType",
+        "deliveryMode",
+        "deliveryStatus",
+        "messageId",
+        "createdAt"
+      ]
+    },
+    "InventoryLog": {
+      "title": "InventoryLog",
+      "description": "Immutable stock movement audit log for real-time inventory tracking.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "productId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "productName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "sku": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "previousStock": {
+          "type": "integer"
+        },
+        "newStock": {
+          "type": "integer"
+        },
+        "delta": {
+          "type": "integer"
+        },
+        "reason": {
+          "type": "string",
+          "enum": ["customer_order", "manual_restock", "inventory_adjustment", "initial_seed"]
+        },
+        "actorUid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "actorEmail": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "orderId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "productId",
+        "productName",
+        "sku",
+        "previousStock",
+        "newStock",
+        "delta",
+        "reason",
+        "actorUid",
+        "actorEmail",
+        "orderId",
+        "createdAt"
+      ]
+    },
+    "AdminMember": {
+      "title": "AdminMember",
+      "description": "Store administrator access grant.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 160
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "email", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Public storefront product catalog with real-time stock counts."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Customer profile and saved delivery details, strictly restricted to owner or admin."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Verified customer orders with payment status and fulfillment tracking."
+    },
+    "/orders/{orderId}/items/{itemId}": {
+      "schema": { "$ref": "#/entities/OrderItem" },
+      "description": "Order line items scoped to the parent order."
+    },
+    "/emailNotifications/{emailId}": {
+      "schema": { "$ref": "#/entities/EmailNotification" },
+      "description": "Automated customer email notification audit log and outbox."
+    },
+    "/inventoryLogs/{logId}": {
+      "schema": { "$ref": "#/entities/InventoryLog" },
+      "description": "Immutable audit log of all stock movements."
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminMember" },
+      "description": "Store inventory manager / admin access list."
+    }
+  }
+}

@@ -1,0 +1,100 @@
+/**
+ * Security Rules Verification Suite (Dirty Dozen Adversarial Payloads)
+ * Intended for validation against Firebase Rules Unit Testing / Emulator.
+ */
+
+export const DIRTY_DOZEN_PAYLOADS = [
+  {
+    name: '1. Shadow Field Injection on Product Checkout Update',
+    path: 'products/prod_basmati_rice',
+    operation: 'update',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    payload: { stockQuantity: 8, price: 0.01, lastOrderId: 'ord_01', updatedAt: 'SERVER_TIME' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '2. Stock Inflation by Customer',
+    path: 'products/prod_basmati_rice',
+    operation: 'update',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    payload: { stockQuantity: 9999, lastOrderId: 'ord_01', updatedAt: 'SERVER_TIME' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '3. Orphaned Stock Decrement without Order Creation',
+    path: 'products/prod_basmati_rice',
+    operation: 'update',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    payload: { stockQuantity: 9, lastOrderId: 'ord_nonexistent', updatedAt: 'SERVER_TIME' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '4. Role Escalation on Profile Creation',
+    path: 'users/cust_01',
+    operation: 'create',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    payload: { uid: 'cust_01', displayName: 'Attacker', email: 'shopper@example.com', role: 'admin', createdAt: 'SERVER_TIME', updatedAt: 'SERVER_TIME' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '5. Unverified Email Spoofing Admin Write',
+    path: 'products/prod_fake',
+    operation: 'create',
+    auth: { uid: 'spoof_01', email: 'nabieumelissajosephine@gmail.com', email_verified: false },
+    payload: { id: 'prod_fake', name: 'Spoofed Item' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '6. Cross-User PII Read on Users',
+    path: 'users/cust_02',
+    operation: 'get',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '7. Blanket Order List Scraping without Owner Filter',
+    path: 'orders',
+    operation: 'list',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '8. Order Forgery for Another Customer',
+    path: 'orders/ord_forged',
+    operation: 'create',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    payload: { id: 'ord_forged', customerId: 'cust_02', status: 'confirmed' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '9. Customer Mutating Order Status',
+    path: 'orders/ord_01',
+    operation: 'update',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    payload: { status: 'delivered', updatedAt: 'SERVER_TIME' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '10. ID Poisoning with Invalid Characters',
+    path: 'products/bad$id!payload',
+    operation: 'create',
+    auth: { uid: 'admin_01', email: 'nabieumelissajosephine@gmail.com', email_verified: true },
+    payload: { id: 'bad$id!payload' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '11. Timestamp Backdating Forgery',
+    path: 'orders/ord_backdated',
+    operation: 'create',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    payload: { id: 'ord_backdated', customerId: 'cust_01', createdAt: '2020-01-01T00:00:00Z' },
+    expected: 'PERMISSION_DENIED',
+  },
+  {
+    name: '12. Non-Admin Audit Log Deletion',
+    path: 'inventoryLogs/log_01',
+    operation: 'delete',
+    auth: { uid: 'cust_01', email: 'shopper@example.com', email_verified: true },
+    expected: 'PERMISSION_DENIED',
+  },
+];

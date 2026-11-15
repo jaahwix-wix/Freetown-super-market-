@@ -1,0 +1,6 @@
+{
+  "name": "Freetown Supermarket",
+  "description": "E-commerce grocery storefront with secure payment gateway, real-time Firestore inventory management, and automated customer email notifications for Freetown Supermarket.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
